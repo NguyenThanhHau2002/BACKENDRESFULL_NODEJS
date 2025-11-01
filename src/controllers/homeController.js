@@ -1,6 +1,9 @@
 const connection = require("../config/database");
-const getHomepage = (req, res) => {
-  return res.render("home.ejs");
+const { getAllUsers } = require("../services/CRUDSerices");
+
+const getHomepage = async (req, res) => {
+  let results = await getAllUsers();
+  return res.render("home.ejs", { listUsers: results });
 };
 const getABC = (req, res) => {
   res.sen("check ABC");
@@ -31,10 +34,15 @@ const postCreateUser = async (req, res) => {
   );
   console.log("check results", results);
   res.send("Created user succed");
-
 };
 const getCreatePage = (req, res) => {
   res.render("create.ejs");
+};
+
+const getUpdatePage = (req, res) => {
+  const userID = req.params.id;
+  console.log(">> check req.params", req.params.userID);
+  res.render("edit.ejs");
 };
 
 module.exports = {
@@ -43,4 +51,5 @@ module.exports = {
   getRepBen,
   postCreateUser,
   getCreatePage,
+  getUpdatePage,
 };
